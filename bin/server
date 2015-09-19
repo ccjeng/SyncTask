@@ -70,7 +70,7 @@ function cloneRecord() {
           parseObjPRD.save(null, {
               success: function(parseObjPRD) {
                 // Execute any logic that should take place after the object is saved.
-                onsole.log('New object created');
+                console.log('New object created');
                 //console.log('New object created with objectId: ' + parseObjPRD.id);
               },
               error: function(parseObjPRD, error) {
