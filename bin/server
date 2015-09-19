@@ -20,7 +20,7 @@ Q.fcall(deleteRecords('RealTime_STG', function(response){
 }))
  .then(setTimeout(function() {
                 cloneRecord();
-              }, 300000))
+              }, 330000))
  .catch(function(error){
     console.log('error = ' + error);
  })

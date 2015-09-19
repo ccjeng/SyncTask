@@ -18,7 +18,7 @@ Q.fcall(deleteRecords('RealTime_STG', function(response){
 }))
  .then(setTimeout(function() {
                 cloneRecord();
-              }, 180000))
+              }, 300000))
  .catch(function(error){
     console.log('error = ' + error);
  })
@@ -68,7 +68,8 @@ function cloneRecord() {
           parseObjPRD.save(null, {
               success: function(parseObjPRD) {
                 // Execute any logic that should take place after the object is saved.
-                console.log('New object created with objectId: ' + parseObjPRD.id);
+                console.log('New object created');
+                //console.log('New object created with objectId: ' + parseObjPRD.id);
               },
               error: function(parseObjPRD, error) {
                 // Execute any logic that should take place if the save fails.
@@ -169,7 +170,7 @@ function geoCoding(obj) {
         parseObj.save(null, {
           success: function(parseObj) {
             // Execute any logic that should take place after the object is saved.
-            console.log('New object created with objectId: ' + parseObj.id);
+            //console.log('New object created with objectId: ' + parseObj.id);
             //countSTGRecordSuccess = countSTGRecordSuccess + 1;
             //return callback('success');
           },
