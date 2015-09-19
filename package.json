@@ -1,0 +1,16 @@
+{
+  "name": "sync",
+  "version": "0.1.0",
+  "description": "sync-up taipei truck data",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "geocoder": "0.2.2",
+    "parse": "^1.6.3",
+    "q": "1.4.1"
+  },
+  "author": "Andy Cheng",
+  "license": "ISC"
+}
