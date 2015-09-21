@@ -6,10 +6,19 @@ var Q = require('q');
 Parse.initialize('nxkxfDhpFQBXOReTPFIPhGIaYowmT5uuscj3w3Kb'
   , 'R9euE24i4CNDknBOLb8ugPCmufnRa1oGazRzZAgp');
 
-var tempTableName = process.argv[2];
-
-var ParseObjectSTG = Parse.Object.extend(tempTableName);
+var arg = process.argv[2];
+var tempTableName;
+var ParseObjectSTG;
 var ParseObjectPRD = Parse.Object.extend('RealTime');
+
+if (arg == '0') {
+  ParseObjectSTG = Parse.Object.extend('RealTime_STG');
+  tempTableName = 'RealTime_STG';
+} else {
+  ParseObjectSTG = Parse.Object.extend('RealTime_STG1');
+  tempTableName = 'RealTime_STG1';
+}
+
 var countSource = 0, countSTGRecordSuccess = 0, countSTGRecordError = 0;
 
 Q.fcall(deleteRecords(tempTableName, function(response){
