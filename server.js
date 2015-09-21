@@ -1,24 +1,24 @@
 var http = require('http');
 var geocoder = require('geocoder');
 var Parse = require('parse/node').Parse;
-//var async = require('async');
 var Q = require('q');
 
 Parse.initialize('nxkxfDhpFQBXOReTPFIPhGIaYowmT5uuscj3w3Kb'
   , 'R9euE24i4CNDknBOLb8ugPCmufnRa1oGazRzZAgp');
 
+var tempTableName = process.argv[2];
 
-var ParseObjectSTG = Parse.Object.extend('RealTime_STG');
+var ParseObjectSTG = Parse.Object.extend(tempTableName);
 var ParseObjectPRD = Parse.Object.extend('RealTime');
 var countSource = 0, countSTGRecordSuccess = 0, countSTGRecordError = 0;
 
-Q.fcall(deleteRecords('RealTime_STG', function(response){
+Q.fcall(deleteRecords(tempTableName, function(response){
       console.log(response);
       httpService();
 }))
  .then(setTimeout(function() {
                 cloneRecord();
-              }, 300000))
+              }, 330000))
  .catch(function(error){
     console.log('error = ' + error);
  })
@@ -33,11 +33,11 @@ function deleteRecords(objectName, callback) {
     query.find().then(function(results) {
         return Parse.Object.destroyAll(results);
     }).then(function() {        
-        console.log('Delete job completed');
-        return callback('Done');
+        //console.log('Step1: deleteRecords is done');
+        return callback('Step1: deleteRecords is done');
     }, function(error) {        
-        console.log('Error in delete query');
-        return callback('Error');
+        //console.log('Step1: Error in delete query');
+        return callback('Step1: Error in delete query');
     });
 
 }
@@ -68,7 +68,7 @@ function cloneRecord() {
           parseObjPRD.save(null, {
               success: function(parseObjPRD) {
                 // Execute any logic that should take place after the object is saved.
-                console.log('New object created');
+                //console.log('New object created');
                 //console.log('New object created with objectId: ' + parseObjPRD.id);
               },
               error: function(parseObjPRD, error) {
@@ -79,6 +79,8 @@ function cloneRecord() {
             });
 
         }
+
+        console.log('Step3: cloneRecord is done');
       },
       error: function(error) {
         console.log("Error: " + error.code + " " + error.message);
@@ -133,7 +135,7 @@ function delayLooping(jsonObj) {
 
       (function(i) {
               setTimeout(function() {
-                console.log(i);
+                //console.log(i);
                 geoCoding(jsonObj[i]);
               }, timeout);
               timeout += 1000;
