@@ -27,7 +27,7 @@ Q.fcall(deleteRecords(tempTableName, function(response){
 }))
  .then(setTimeout(function() {
                 cloneRecord();
-              }, 330000))
+              }, 300000))
  .catch(function(error){
     console.log('error = ' + error);
  })
@@ -60,7 +60,7 @@ function cloneRecord() {
       var parseObjPRD = new ParseObjectPRD();
 
       var query = new Parse.Query(parseObjSTG);
-      query.limit(1000); 
+      query.limit(900); 
 
       query.find({
       success: function(results) {
