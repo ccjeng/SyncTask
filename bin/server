@@ -29,7 +29,7 @@ Q.fcall(deleteRecords(tempTableName, function(response){
 }))
  .then(setTimeout(function() {
                 cloneRecord();
-              }, 330000))
+              }, 300000))
  .catch(function(error){
     console.log('error = ' + error);
  })
@@ -149,7 +149,7 @@ function delayLooping(jsonObj) {
                 //console.log(i);
                 geoCoding(jsonObj[i]);
               }, timeout);
-              timeout += 1000;
+              timeout += 900;
       })(i);
 
   }
