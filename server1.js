@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var http = require('http');
 var geocoder = require('geocoder');
 var Parse = require('parse/node').Parse;
@@ -21,46 +23,21 @@ if (arg == '0') {
 
 var countSource = 0, countSTGRecordSuccess = 0, countSTGRecordError = 0;
 
-var timeourSec = 300000;
-
-/*
 Q.fcall(deleteRecords(tempTableName, function(response){
-      //console.log(response);
+      console.log(response);
       httpService();
 }))
  .then(setTimeout(function() {
                 cloneRecord();
-              }, timeourSec))
- .catch(function(error){
-    console.log('error = ' + error);
- })
- .done();
-*/
-
-Q.fcall(deleteRecords(tempTableName))
-.then(function(result) {
-  return httpService()
-})
-.then(function(jsonObj) {
-  return delayLooping(jsonObj);
-})
-.then(function(ms){
-      delay(ms);
-  })
+              }, 150000))
  .catch(function(error){
     console.log('error = ' + error);
  })
  .done();
 
 
-function delay(ms) {
-    var deferred = Q.defer();
-    console.log('ms ='+ ms);
-    setTimeout(cloneRecord(), ms);
-    return deferred.promise;
-}
 
-function deleteRecords(objectName) {
+function deleteRecords(objectName, callback) {
 
   var query = new Parse.Query(objectName);
     query.limit(1000); 
@@ -68,10 +45,10 @@ function deleteRecords(objectName) {
         return Parse.Object.destroyAll(results);
     }).then(function() {        
         //console.log('Step1: deleteRecords is done');
-        return console.log('Step1: deleteRecords is done');
+        return callback('Step1: deleteRecords is done');
     }, function(error) {        
         //console.log('Step1: Error in delete query');
-        return console.log('Step1: Error in delete query');
+        return callback('Step1: Error in delete query');
     });
 
 }
@@ -149,9 +126,7 @@ function httpService() {
 
       jsonObj = JSON.parse(str);
 
-      //delayLooping(jsonObj);
-      return jsonObj;
-      //return (jsonObj.length + 2)*900;
+      delayLooping(jsonObj);
 
     });
   }
@@ -164,12 +139,8 @@ function httpService() {
 function delayLooping(jsonObj) {
   
   var timeout = 0;
-  //countSource = jsonObj.length;
-  //console.log('count = ' + countSource);
-  //timeourSec = (countSource + 2)* 900;
-  //console.log('timeourSec = ' + timeourSec);
 
-
+  console.log('count = ' + jsonObj.length);
 
   for (var i = 0; i < jsonObj.length; i++) {
 
@@ -178,12 +149,10 @@ function delayLooping(jsonObj) {
                 //console.log(i);
                 geoCoding(jsonObj[i]);
               }, timeout);
-              timeout += 900;
+              timeout += 500;
       })(i);
 
   }
-
-  return (jsonObj.length + 2)* 900;
 
 
 }
