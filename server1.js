@@ -23,19 +23,42 @@ if (arg == '0') {
 
 var countSource = 0, countSTGRecordSuccess = 0, countSTGRecordError = 0;
 
-Q.fcall(deleteRecords(tempTableName, function(response){
-      console.log(response);
+/*
+Q.nfcall(deleteRecords(tempTableName, function(response){
+      console.log('response= '+response);
       httpService();
 }))
- .then(setTimeout(function() {
-                cloneRecord();
-              }, 150000))
+ .then(
+     //setTimeout(function() {
+
+                cloneRecord()
+         //     }, 150000)
+ )
  .catch(function(error){
     console.log('error = ' + error);
  })
  .done();
+*/
 
+deleteRecords(tempTableName, function(response){
+      console.log(response);
+      httpService(function(response){
+        console.log(response);
+        cloneRecord();
+      });
+});
 
+/*
+step1(function (value1) {
+    step2(value1, function(value2) {
+        step3(value2, function(value3) {
+            step4(value3, function(value4) {
+                // Do something with value4
+            });
+        });
+    });
+});
+*/
 
 function deleteRecords(objectName, callback) {
 
@@ -45,10 +68,10 @@ function deleteRecords(objectName, callback) {
         return Parse.Object.destroyAll(results);
     }).then(function() {        
         //console.log('Step1: deleteRecords is done');
-        return callback('Step1: deleteRecords is done');
+        return callback('Step1: deleteRecords is done ' + objectName);
     }, function(error) {        
         //console.log('Step1: Error in delete query');
-        return callback('Step1: Error in delete query');
+        return callback('Step1: Error in delete query ' + objectName);
     });
 
 }
@@ -80,7 +103,7 @@ function cloneRecord() {
               success: function(parseObjPRD) {
                 // Execute any logic that should take place after the object is saved.
                 //console.log('New object created');
-                //console.log('New object created with objectId: ' + parseObjPRD.id);
+                console.log('New object created with objectId: ' + parseObjPRD.id);
               },
               error: function(parseObjPRD, error) {
                 // Execute any logic that should take place if the save fails.
@@ -128,7 +151,7 @@ function httpService() {
 
       delayLooping(jsonObj);
 
-    });
+    });    
   }
 
   http.request(options, callback).end();
@@ -144,6 +167,7 @@ function delayLooping(jsonObj) {
 
   for (var i = 0; i < jsonObj.length; i++) {
 
+/*
       (function(i) {
               setTimeout(function() {
                 //console.log(i);
@@ -152,10 +176,24 @@ function delayLooping(jsonObj) {
               timeout += 500;
       })(i);
 
+      */
+
+    delayTimeout(i, function(i) {
+                geoCoding(jsonObj[i]);
+              });
+
   }
 
 
 }
+
+
+function delayTimeout(param,  callback) {
+  setTimeout(function(){
+      callback(param);
+  },900);
+}
+
 
 function geoCoding(obj) {
 
@@ -183,7 +221,7 @@ function geoCoding(obj) {
         parseObj.save(null, {
           success: function(parseObj) {
             // Execute any logic that should take place after the object is saved.
-            //console.log('New object created with objectId: ' + parseObj.id);
+            console.log('New object created with objectId: ' + parseObj.id);
             //countSTGRecordSuccess = countSTGRecordSuccess + 1;
             //return callback('success');
           },
